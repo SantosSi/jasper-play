@@ -11,7 +11,8 @@ with the local Sphinx STT, which has a limited amount of recognized words.
 1. Install mpd and mpc with your operating system's methods (e.g. package 
    manager on Linux)
 2. Configure mpd for the folder storing your MP3s
-3. Install playmp3.py into jasper-client's module subfolder
+3. Install MPD support: pip install python-mpd2 
+4. Install playmp3.py into jasper-client's module subfolder
 
 ## Usage
 ```
