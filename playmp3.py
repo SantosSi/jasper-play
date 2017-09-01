@@ -2,7 +2,7 @@
 #Written by Silvério Santos
 
 import re
-import json
+#import json
 from mpd import MPDClient
 
 WORDS = ["PLAY"]
@@ -17,12 +17,14 @@ def handle(text, mic, profile):
     action = mic.activeListen()
     
     if action == "PLAY":
+        #Search for artist and title
         found = mpd_search(mpdCl, mic)
         if len(found) == 0:
+            # If not found: error message
             mic.say("No titles found.")
         else:
-            mpd_play(mpdCl, mic, found)
-            
+            # If found: play it 
+            mpd_play(mpdCl, mic, found)            
     elif action == "UPDATE":
         mpd_update(mpdCl, mic)
     else:
@@ -38,11 +40,11 @@ def get_mpdClient():
     return mpdCl
 
 def mpd_search(mpdCl, mic):
-    # User says the artist
+    # User to say the artist
     mic.say("What artist would you like to hear music from?")
     artist = mic.activeListen()
 
-    # User says the title
+    # User to say the title
     mic.say("What title would you like to hear?")
     title = mic.activeListen()
 
@@ -50,19 +52,14 @@ def mpd_search(mpdCl, mic):
     return mpdCl.search("artist", artist, "title", title)
 
 def mpd_play(mpdCl, mic, found):
-    # Todo: Select from multiple answers
-    mic.say("Playing")
-    # Debug:
-    print(found)
-    print json.dumps(found, separators=(',', ': '))
-    #mpdCl.play()
+    if len(found) > 0:
+        mic.say("Playing")
+        mpdCl.clear()
+        mpdCl.playid(mpdCl.addid(found[0]['file']))
 
 def mpd_update(mpdCl, mic):
     mic.say("Updating song database...")
     mpdCl.update()
-    # Todo: Say amount of found titles and/or artists
-    #title_count = mpdCl.count('title')
-    #mic.mpdCl("Finished updating. Found " + title_count + " titles.")
 
 def mpd_stop(mpdCl, mic):
     mpdCl.stop()
